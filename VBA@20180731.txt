@@ -1,0 +1,55 @@
+﻿Sub Ex()
+    Dim DDE As Range, DDE2 As Range, DDEC As Range
+        Z = 0
+        j = 2
+        
+        Do
+          DoEvents
+            If Sheets(1).Cells(2, 10) > Z Then      '第10欄為成交量欄位 請自行修改
+                Z = Sheets(1).Cells(2, 10)          '第10欄為成交量欄位 請自行修改
+                
+                Sheets(2).Cells(j, 1).Resize(1, 36) = Sheets(1).Cells(2, 1).Resize(1, 36).Value
+                 '第36欄為最後一個欄位 請自行修改
+                
+        j = j + 1
+            
+            Call ToCSV
+            
+           
+                
+            End If
+        
+        Loop
+End Sub
+
+
+Sub ToCSV()
+Dim CsvBook As Workbook
+'Set Path = "\\Mac\Home\Downloads"
+Set MyBook = ThisWorkbook
+
+Application.ScreenUpdating = False
+'-------------------------------------
+CsvPath = "\\Mac\Home\Downloads" & "\"  'CVS路徑位置 請自行修改
+CsvFile = Sheets(2).Range("P2:P2").Value & "_" & Sheets(2).Range("A2:A2").Value
+ '第P2欄為資料日期欄位 請自行修改
+  '第A2欄為商品代碼欄位 請自行修改
+
+Sheets(2).Copy
+Set CsvBook = ActiveWorkbook
+MyBook.Activate
+
+Application.DisplayAlerts = False
+With CsvBook
+     Application.DisplayAlerts = False
+     .SaveAs Filename:=CsvPath & CsvFile & ".csv", _
+             FileFormat:=xlCSV, CreateBackup:=False
+     .Close SaveChanges:=False
+     Application.DisplayAlerts = True
+End With
+End Sub
+
+
+
+
+
